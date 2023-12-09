@@ -6,6 +6,7 @@ import { toHex } from 'ethereum-cryptography/utils';
 function Wallet({ address, setAddress, balance, setBalance, privateKey, setPrivateKey }) {
   async function onChange(evt) {
     const privateKey = evt.target.value;
+    console.log(evt.target);
     setPrivateKey(privateKey);
     const address = toHex(secp.secp256k1.getPublicKey(privateKey));
     setAddress(address);
