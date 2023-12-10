@@ -4,21 +4,21 @@ import "./App.scss";
 import { useState } from "react";
 
 function App() {
-  const [balance, setBalance] = useState(0);
-  const [address, setAddress] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
+  const [donorBalance, setDonorBalance] = useState(0);
+  const [recipientPublicKey, setRecipientPublicKey] = useState("");
+  const [donorPublicKey, setDonorPublicKey] = useState("");
 
   return (
     <div className="app">
       <Wallet
-        balance={balance}
-        privateKey={privateKey}
-        setPrivateKey={setPrivateKey}
-        setBalance={setBalance}
-        address={address}
-        setAddress={setAddress}
+        donorBalance={donorBalance}
+        donorPublicKey={donorPublicKey}
+        setDonorPublicKey={setDonorPublicKey}
+        setDonorBalance={setDonorBalance}
+        recipientPublicKey={recipientPublicKey}
+        setRecipientPublicKey={setRecipientPublicKey}
       />
-      <Transfer setBalance={setBalance} address={address} />
+      <Transfer setDonorBalance={setDonorBalance} donorPublicKey={donorPublicKey} />
     </div>
   );
 }

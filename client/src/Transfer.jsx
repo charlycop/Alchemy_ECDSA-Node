@@ -1,22 +1,29 @@
 import { useState } from "react";
 import server from "./server";
 
-function Transfer({ address, setBalance }) {
+function Transfer({ donorPublicKey, setBalance }) {
   const [sendAmount, setSendAmount] = useState("");
-  const [recipient, setRecipient] = useState("");
+  const [recipientPublicKey, setRecipientPublicKey] = useState("");
+  const [donorTransactionSignature, setDonorTransactionSignature] = useState("");
+
 
   const setValue = (setter) => (evt) => setter(evt.target.value);
 
   async function transfer(evt) {
     evt.preventDefault();
 
+    if (donorTransactionSignature.length !== 128){
+      console.log("Signature should be 128 characters.");
+      return;
+    }
     try {
       const {
         data: { balance },
       } = await server.post(`send`, {
-        sender: address,
+        donor: donorPublicKey,
         amount: parseInt(sendAmount),
-        recipient,
+        recipient : recipientPublicKey,
+        donorTransactionSignature : donorTransactionSignature,
       });
       setBalance(balance);
     } catch (ex) {
@@ -34,15 +41,27 @@ function Transfer({ address, setBalance }) {
           placeholder="1, 2, 3..."
           value={sendAmount}
           onChange={setValue(setSendAmount)}
+          required
         ></input>
       </label>
 
       <label>
-        Recipient
+        Recipient Public Key
         <input
-          placeholder="Type an address, for example: 0x2"
-          value={recipient}
-          onChange={setValue(setRecipient)}
+          placeholder="Type in a public key"
+          value={recipientPublicKey}
+          onChange={setValue(setRecipientPublicKey)}
+          required
+        ></input>
+      </label>
+
+      <label>
+        Signature
+        <input
+          placeholder="Type in the transaction signature from the donor private key"
+          value={donorTransactionSignature}
+          onChange={setValue(setDonorTransactionSignature)}
+          required
         ></input>
       </label>
 
